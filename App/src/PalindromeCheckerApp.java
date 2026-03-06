@@ -1,39 +1,78 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
+class Node {
+    char data;
+    Node next;
+
+    Node(char data) {
+        this.data = data;
+        this.next = null;
+    }
+}
 
 public class PalindromeCheckerApp {
 
-    public static boolean isPalindrome(String text) {
-        Deque<Character> deque = new ArrayDeque<>();
+    static Node head = null;
 
-        for (char ch : text.toCharArray()) {
-            deque.addLast(ch);
+    static void add(char data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+            return;
+        }
+        Node temp = head;
+        while (temp.next != null) {
+            temp = temp.next;
+        }
+        temp.next = newNode;
+    }
+
+    static Node reverse(Node node) {
+        Node prev = null;
+        Node current = node;
+        Node next;
+
+        while (current != null) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        return prev;
+    }
+
+    static boolean isPalindrome() {
+        if (head == null || head.next == null) return true;
+
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
         }
 
-        while (deque.size() > 1) {
-            char front = deque.removeFirst();
-            char rear = deque.removeLast();
+        Node secondHalf = reverse(slow);
+        Node firstHalf = head;
 
-            if (front != rear) {
+        while (secondHalf != null) {
+            if (firstHalf.data != secondHalf.data) {
                 return false;
             }
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
         }
-
         return true;
     }
 
     public static void main(String[] args) {
-        String word1 = "madam";
-        String word2 = "hello";
+        String text = "madam";
 
-        if (isPalindrome(word1))
-            System.out.println(word1 + " is  a Palindrome");
-        else
-            System.out.println(word1 + " is not a Palindrome");
+        for (char c : text.toCharArray()) {
+            add(c);
+        }
 
-        if (isPalindrome(word2))
-            System.out.println(word2 + " is a Palindrome");
+        if (isPalindrome())
+            System.out.println(text + " is a Palindrome");
         else
-            System.out.println(word2 + " is not a Palindrome");
+            System.out.println(text + " is not a Palindrome");
     }
 }

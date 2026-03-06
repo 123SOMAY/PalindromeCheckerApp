@@ -1,35 +1,39 @@
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class PalindromeCheckerApp {
 
-    public static void main(String[] args) {
-        String text = "madam";
-
-        Queue<Character> queue = new LinkedList<>();
-        Stack<Character> stack = new Stack<>();
-
+    public static boolean isPalindrome(String text) {
+        Deque<Character> deque = new ArrayDeque<>();
 
         for (char ch : text.toCharArray()) {
-            queue.add(ch);
-            stack.push(ch);
+            deque.addLast(ch);
         }
 
-        boolean isPalindrome = true;
+        while (deque.size() > 1) {
+            char front = deque.removeFirst();
+            char rear = deque.removeLast();
 
-
-        while (!queue.isEmpty()) {
-            if (queue.remove() != stack.pop()) {
-                isPalindrome = false;
-                break;
+            if (front != rear) {
+                return false;
             }
         }
 
-        if (isPalindrome) {
-            System.out.println(text + " is  a Palindrome");
-        } else {
-            System.out.println(text + " is not a Palindrome");
-        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        String word1 = "madam";
+        String word2 = "hello";
+
+        if (isPalindrome(word1))
+            System.out.println(word1 + " is  a Palindrome");
+        else
+            System.out.println(word1 + " is not a Palindrome");
+
+        if (isPalindrome(word2))
+            System.out.println(word2 + " is a Palindrome");
+        else
+            System.out.println(word2 + " is not a Palindrome");
     }
 }
